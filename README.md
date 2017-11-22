@@ -1,7 +1,7 @@
 ## use
 
 ```bash
-npm install catch-global-error
+npm install catch-global-error --save
 ```
 
 ```js
