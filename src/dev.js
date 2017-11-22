@@ -1,3 +1,4 @@
+// import CatchError from '../lib/catch-error.min';
 import CatchError from './index';
 
 const catchError = new CatchError();

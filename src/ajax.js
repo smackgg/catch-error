@@ -1,4 +1,4 @@
-export default function post({ url, data, method = 'post' }) {
+export default function ajax({ url, data, method = 'post' }) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
