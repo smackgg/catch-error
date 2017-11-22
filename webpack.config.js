@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -31,3 +32,32 @@ module.exports = {
     }),
   ],
 };
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins = [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"',
+      },
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+    }),
+  ];
+
+  if (process.env.BUILD === 'publish') {
+    module.exports.entry = './index.js';
+    module.exports.output = {
+      path: path.resolve(__dirname, './lib'),
+      filename: 'catch-error.min.js',
+      umdNamedDefine: true,
+      library: 'CatchError',
+      libraryTarget: 'umd',
+    };
+  }
+}
