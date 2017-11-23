@@ -3,7 +3,7 @@ import ajax from './ajax';
 const defaultConfig = {
   vConsole: '//s.url.cn/qqun/qun/qqweb/m/qun/confession/js/vconsole.min.js',
   method: 'post',
-  url: '/error',
+  // url: '/error',
   showDevtools: false,
 };
 
@@ -29,7 +29,13 @@ class CatchError {
   init(config) {
     this.store = [];
     this.config = Object.assign(defaultConfig, config);
-    window.onerror = this.onerror;
+    if (window.onerror) {
+      this.windowError = window.onerror;
+    }
+    if (this.config.url) {
+      window.onerror = this.onerror;
+    }
+
     const that = this;
     const methodList = ['log', 'info', 'warn', 'debug', 'error'];
     methodList.forEach((item) => {
@@ -44,12 +50,14 @@ class CatchError {
         method.apply(console, arguments);
       };
     });
+
     if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
       this.vConsole(this.config.showConsole);
     }
   }
 
   onerror = (msg, url, line, col, error) => {
+    if (this.windowError) this.windowError(msg, url, line, col, error);
     let newMsg = msg;
 
     if (error && error.stack) {
