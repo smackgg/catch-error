@@ -4,6 +4,10 @@ import CatchError from './index';
 const catchError = new CatchError();
 catchError.init({
   url: '/api/error/log',
+  // showDevtools: true,
 });
-const a = 1;
-console.log(a.b.c);
+
+setTimeout(() => {
+  const a = 1;
+  console.log(a.b.c);
+}, 100);
