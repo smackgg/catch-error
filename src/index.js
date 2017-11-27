@@ -1,7 +1,7 @@
 import ajax from './ajax';
 
 const defaultConfig = {
-  vConsole: '//s.url.cn/qqun/qun/qqweb/m/qun/confession/js/vconsole.min.js',
+  cdn: 'https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js',
   method: 'post',
   // url: '/error',
   showDevtools: false,
@@ -27,33 +27,21 @@ function isOBJByType(o, type) {
 
 class CatchError {
   init(config) {
-    this.store = [];
     this.config = Object.assign(defaultConfig, config);
+
     if (window.onerror) {
       this.windowError = window.onerror;
     }
+
     if (this.config.url) {
       window.onerror = this.onerror;
     }
 
-    const that = this;
-    const methodList = ['log', 'info', 'warn', 'debug', 'error'];
-    methodList.forEach((item) => {
-      const method = console[item];
-
-      console[item] = function co() {
-        that.store.push({
-          logType: item,
-          logs: arguments,
-        });
-
-        method.apply(console, arguments);
-      };
-    });
-
     if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
-      this.vConsole(this.config.showConsole);
+      return this.loadVconsole();
     }
+
+    return Promise.resolve();
   }
 
   onerror = (msg, url, line, col, error) => {
@@ -88,21 +76,7 @@ class CatchError {
     });
   }
 
-  vConsole = (show) => {
-    this.loadScript(this.config.vConsole).then(() => {
-      this.store.forEach((item) => {
-        const newItem = item;
-        newItem.noOrigin = true;
-        window.vConsole.pluginList.default.printLog(newItem);
-      });
-      if (show) {
-        window.addEventListener('load', () => {
-          window.vConsole.show();
-        });
-      }
-    });
-  }
-
+  loadVconsole = () => this.loadScript(this.config.cdn).then(() => new window.VConsole());
 
   loadScript = src => new Promise((resolve) => {
     let flag = false;
