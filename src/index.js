@@ -29,16 +29,27 @@ class CatchError {
   init(config) {
     this.config = Object.assign(defaultConfig, config);
 
-    if (window.onerror) {
-      this.windowError = window.onerror;
-    }
-
-    if (this.config.url) {
-      window.onerror = this.onerror;
-    }
+    window.addEventListener('unhandledrejection', (ev) => {
+      if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
+        // Upload Logs Error
+        return;
+      }
+      throw ev.reason;
+    });
 
     if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
-      return this.loadVconsole();
+      return this.loadScript(this.config.cdn).then((vConsole) => {
+        // catch error for uploading the error
+        if (this.config.url) {
+          if (window.onerror) {
+            // cache window.onerror function
+            this.windowError = window.onerror;
+          }
+
+          window.onerror = this.onerror;
+        }
+        return Promise.resolve(vConsole);
+      });
     }
 
     return Promise.resolve();
@@ -76,8 +87,6 @@ class CatchError {
     });
   }
 
-  loadVconsole = () => this.loadScript(this.config.cdn).then(() => new window.VConsole());
-
   loadScript = src => new Promise((resolve) => {
     let flag = false;
     const el = document.createElement('script');
@@ -86,7 +95,8 @@ class CatchError {
     const finished = () => {
       if (!flag && (!this.readyState || this.readyState === 'complete')) {
         flag = true;
-        resolve();
+        const vConsole = new window.VConsole();
+        resolve(vConsole);
       }
     };
 
