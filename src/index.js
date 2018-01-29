@@ -27,6 +27,11 @@ function isOBJByType(o, type) {
 
 class CatchError {
   init(config) {
+    if (this.loaded) {
+      return false;
+    }
+
+    this.loaded = true;
     this.config = Object.assign(defaultConfig, config);
 
     window.addEventListener('unhandledrejection', (ev) => {
@@ -88,13 +93,11 @@ class CatchError {
   }
 
   loadScript = src => new Promise((resolve) => {
-    let flag = false;
     const el = document.createElement('script');
     el.type = 'text/javascript';
     el.src = src;
     const finished = () => {
-      if (!flag && (!this.readyState || this.readyState === 'complete')) {
-        flag = true;
+      if (!this.readyState || this.readyState === 'complete') {
         const vConsole = new window.VConsole();
         resolve(vConsole);
       }
