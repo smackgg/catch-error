@@ -34,16 +34,16 @@ class CatchError {
     this.loaded = true;
     this.config = Object.assign(defaultConfig, config);
 
-    window.addEventListener('unhandledrejection', (ev) => {
-      if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
-        // Upload Logs Error
-        return;
-      }
-      throw ev.reason;
-    });
-
     if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
       return this.loadScript(this.config.cdn).then((vConsole) => {
+        window.addEventListener('unhandledrejection', (ev) => {
+          // catch Promise error
+          if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
+            // Upload Logs Error
+            return;
+          }
+          throw ev.reason;
+        });
         // catch error for uploading the error
         if (this.config.url) {
           if (window.onerror) {
