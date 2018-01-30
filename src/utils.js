@@ -5,7 +5,7 @@ export const ajax = ({ url, data, method = 'post' }) => new Promise((resolve, re
       if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
         resolve(xhr.responseText, xhr.status, xhr);
       } else {
-        reject(new Error(`请求错误(UploadLogsError): ${xhr.status} ${xhr.statusText}`));
+        reject(new Error(`请求错误(UploadLogsError): ${url} ${xhr.status} ${xhr.statusText}`));
       }
     }
   };
