@@ -96,6 +96,8 @@ class CatchError {
     const el = document.createElement('script');
     el.type = 'text/javascript';
     el.src = src;
+    el.setAttribute('crossorigin', 'anonymous');
+    el.crossorigin = 'anonymous';
     const finished = () => {
       if (!this.readyState || this.readyState === 'complete') {
         const vConsole = new window.VConsole();
