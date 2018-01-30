@@ -1,29 +1,11 @@
-import ajax from './ajax';
+import { ajax, loadScript, processStackMsg, isOBJByType } from './utils';
 
-const defaultConfig = {
+const DEFALT_CONFIG = {
   cdn: 'https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js',
   method: 'post',
   // url: '/error',
   showDevtools: false,
 };
-
-function processStackMsg(error) {
-  let stack = error.stack
-    .replace(/\n/gi, '')
-    .split(/\bat\b/)
-    .slice(0, 9)
-    .join('@')
-    .replace(/\?[^:]+/gi, '');
-  const msg = error.toString();
-  if (stack.indexOf(msg) < 0) {
-    stack = `${msg}@${stack}`;
-  }
-  return stack;
-}
-
-function isOBJByType(o, type) {
-  return Object.prototype.toString.call(o) === `[object ${type || 'Object'}]`;
-}
 
 class CatchError {
   init(config) {
@@ -32,10 +14,11 @@ class CatchError {
     }
 
     this.loaded = true;
-    this.config = Object.assign(defaultConfig, config);
+    this.config = { ...DEFALT_CONFIG, ...config };
 
     if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
-      return this.loadScript(this.config.cdn).then((vConsole) => {
+      return loadScript(this.config.cdn).then(() => {
+        const vConsole = new window.VConsole();
         window.addEventListener('unhandledrejection', (ev) => {
           // catch Promise error
           if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
@@ -91,26 +74,6 @@ class CatchError {
       data: logs,
     });
   }
-
-  loadScript = src => new Promise((resolve) => {
-    const el = document.createElement('script');
-    el.type = 'text/javascript';
-    el.src = src;
-    el.setAttribute('crossorigin', 'anonymous');
-    el.crossorigin = 'anonymous';
-    const finished = () => {
-      if (!this.readyState || this.readyState === 'complete') {
-        const vConsole = new window.VConsole();
-        resolve(vConsole);
-      }
-    };
-
-    el.onload = finished;
-    el.onreadystatechange = finished;
-
-    const t = document.getElementsByTagName('script')[0];
-    t.parentNode.insertBefore(el, t);
-  });
 }
 
 export default CatchError;
