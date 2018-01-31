@@ -10,7 +10,7 @@ export const ajax = ({ url, data, method = 'post' }) => new Promise((resolve, re
     }
   };
   if (method === 'get') {
-    xhr.open(method, url, true);
+    xhr.open(method, `url${/\?/.test(url) ? '&' : '?'}msg=${encodeURIComponent(data.msg)}`, true);
     xhr.send(null);
   }
   if (method === 'post') {
