@@ -43,6 +43,7 @@ class CatchError {
           logType: item,
           logs: args,
         });
+        this.method[item].apply(console, args);
       };
     });
 
