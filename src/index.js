@@ -8,24 +8,29 @@ const DEFALT_CONFIG = {
 };
 
 class CatchError {
-  init(config) {
-    if (this.loaded) {
-      return false;
-    }
-
-    this.loaded = true;
-    this.config = { ...DEFALT_CONFIG, ...config };
-    if (!this.config.showDevtools && !/devtools=show/.test(window.location.search)) {
-      // no devtool
-      return Promise.resolve();
-    }
-
+  constructor() {
     // cache store
     this.store = [];
     this.methodList = ['log', 'warn', 'info', 'debug', 'error'];
     this.method = {};
+    this.vConsole = null;
+  }
+  init = (config) => {
+    this.config = { ...DEFALT_CONFIG, ...config };
 
     this.cacheLog();
+
+    if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
+      return this.show();
+    }
+    return Promise.resolve();
+  }
+
+  show = () => {
+    if (this.vConsole) {
+      return Promise.resolve(this.vConsole);
+    }
+
     return loadScript(this.config.cdn).then(() => this.initVConsole());
   }
 
@@ -60,11 +65,11 @@ class CatchError {
       console[i] = this.method[i];
     });
 
-    const vConsole = new window.VConsole();
+    this.vConsole = new window.VConsole();
 
     // 使用 vconsole 打印缓存中的 log
     this.store.forEach((item) => {
-      vConsole.pluginList.default.printLog({
+      this.vConsole.pluginList.default.printLog({
         logType: item.logType,
         logs: item.logs,
       });
@@ -80,7 +85,7 @@ class CatchError {
       window.onerror = this.onerror;
     }
 
-    return Promise.resolve(vConsole);
+    return Promise.resolve(this.vConsole);
   }
 
   logRejectMessage = (ev) => {
