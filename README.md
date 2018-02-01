@@ -1,7 +1,12 @@
+## catch-global-error
+devtools(vConsole)、upload error、log monitoring
+
 ## use
 
 ```bash
 npm install catch-global-error --save
+// or
+yarn add catch-global-error
 ```
 
 ```js
@@ -9,28 +14,52 @@ import CatchError from 'catch-global-error';
 
 const catchError = new CatchError();
 catchError.init({
-  url: '/api/error/log', // upload error
+  url: '/api/error/log', // upload error site
 });
 const a = 1;
 console.log(a.b.c);
 ```
 
 ## show devtools
+
+### 1. ```showDevtools = true```
 ```js
-// method 1: init
+// 1: init
+import CatchError from 'catch-global-error';
+const catchError = new CatchError();
 catchError.init({
   url: '/api/error/log',
   showDevtools: true, // default show Devtools
 });
 ```
 
-```
-// method 2: add ```devtools=show``` to url query:
-www.***.com?devtools=show
+### 2. url query
+
+```js
+// default: www.***.com?devtools=show
+// you can change url query switch
+
+// eq: www.***.com?show=test
+import CatchError from 'catch-global-error';
+const catchError = new CatchError();
+catchError.init({
+  url: '/api/error/log',
+  urlSwitch: {
+    show: 'test',
+  },
+});
 ```
 
-## dev
-npm run dev
+### 3. catchError.show
 
-## publish
-npm run publish
+```js
+import CatchError from 'catch-global-error';
+const catchError = new CatchError();
+catchError.init({
+  url: '/api/error/log',
+});
+
+window.onclick = () => {
+  catchError.show();
+};
+```
