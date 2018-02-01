@@ -95,7 +95,10 @@ class CatchError {
   logRejectMessage = (ev) => {
     if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
       // Upload Logs Error
-      console.error(ev.reason.message);
+      this.store.push({
+        logType: 'error',
+        logs: [ev.reason.message],
+      });
       return;
     }
     const {
