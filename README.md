@@ -1,5 +1,6 @@
-## catch-global-error
-web: devtools(vConsole)、upload error、monitoring logs
+## catch-global-error ( web )
+
+devtools([vConsole](https://github.com/Tencent/vConsole))、upload error、monitoring logs
 
 ## Use
 
@@ -30,9 +31,12 @@ options parameter
 
 | param | description | type | value | default value |
 | --- | --- | --- | --- | --- |
-| url | the site of upload error | String | - | - |
+| url | the site of uploading error | String | - | - |
+| method | the method of uploading error | String | get/post | post |
 | showDevtools | show devtools | Boolean | true/false | false |
 | urlSwitch | url query for devtools | Object | - | { devtools: 'show' } |
+| cdn | vConsole cdn | String | - | 'https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js' |
+
 
 ### show()
 
@@ -78,3 +82,7 @@ window.onclick = () => {
   catchError.show();
 };
 ```
+
+## LICENSE
+
+MIT
