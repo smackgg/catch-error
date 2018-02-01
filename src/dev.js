@@ -5,6 +5,9 @@ const catchError = new CatchError();
 catchError.init({
   url: '/api/error/log',
   showDevtools: false,
+  urlSwitch: {
+    show: 'test',
+  },
 });
 
 window.onclick = () => {
