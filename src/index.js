@@ -5,6 +5,9 @@ const DEFALT_CONFIG = {
   method: 'post',
   // url: '/error',
   showDevtools: false,
+  urlSwitch: {
+    devtools: 'show',
+  },
 };
 
 class CatchError {
@@ -19,8 +22,13 @@ class CatchError {
     this.config = { ...DEFALT_CONFIG, ...config };
 
     this.cacheLog();
+    const { showDevtools, urlSwitch } = this.config;
+    const show = Object.keys(urlSwitch).reduce((pre, item) => {
+      const regExp = new RegExp(`${item}=${urlSwitch[item]}`);
+      return regExp.test(window.location.search) || pre;
+    }, false);
 
-    if (this.config.showDevtools || /devtools=show/.test(window.location.search)) {
+    if (showDevtools || show) {
       return this.show();
     }
     return Promise.resolve();
@@ -60,11 +68,6 @@ class CatchError {
 
   initVConsole = () => {
     // vconsole 加载完毕后初始化
-
-    // 将前面的 console 拦截移除
-    this.methodList.forEach((i) => {
-      console[i] = this.method[i];
-    });
 
     this.vConsole = new window.VConsole();
 
