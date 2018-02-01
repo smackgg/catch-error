@@ -1,7 +1,7 @@
 ## catch-global-error
-devtools(vConsole)、upload error、monitoring logs
+web: devtools(vConsole)、upload error、monitoring logs
 
-## use
+## Use
 
 ```bash
 npm install catch-global-error --save
@@ -20,7 +20,26 @@ const a = 1;
 console.log(a.b.c);
 ```
 
-## show devtools
+## Method
+
+### init([config])
+
+initialize
+
+options parameter
+
+| param | description | type | value | default value |
+| --- | --- | --- | --- | --- |
+| url | the site of upload error | String | - | - |
+| showDevtools | show devtools | Boolean | true/false | false |
+| urlSwitch | url query for devtools | Object | - | { devtools: 'show' } |
+
+### show()
+
+show devtools
+
+
+## Demo of devtools
 
 ### 1. ```showDevtools = true```
 ```js
