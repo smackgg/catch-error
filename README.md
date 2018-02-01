@@ -1,5 +1,5 @@
 ## catch-global-error
-devtools(vConsole)、upload error、log monitoring
+devtools(vConsole)、upload error、monitoring logs
 
 ## use
 
@@ -28,7 +28,6 @@ console.log(a.b.c);
 import CatchError from 'catch-global-error';
 const catchError = new CatchError();
 catchError.init({
-  url: '/api/error/log',
   showDevtools: true, // default show Devtools
 });
 ```
@@ -43,7 +42,6 @@ catchError.init({
 import CatchError from 'catch-global-error';
 const catchError = new CatchError();
 catchError.init({
-  url: '/api/error/log',
   urlSwitch: {
     show: 'test',
   },
@@ -55,9 +53,7 @@ catchError.init({
 ```js
 import CatchError from 'catch-global-error';
 const catchError = new CatchError();
-catchError.init({
-  url: '/api/error/log',
-});
+catchError.init();
 
 window.onclick = () => {
   catchError.show();
