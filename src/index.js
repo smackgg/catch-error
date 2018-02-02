@@ -93,20 +93,23 @@ class CatchError {
   }
 
   logRejectMessage = (ev) => {
-    if (ev.reason.message.indexOf('请求错误(UploadLogsError)') >= 0) {
-      // Upload Logs Error
-      this.store.push({
-        logType: 'error',
-        logs: [ev.reason.message],
-      });
-      return;
-    }
     const {
       message: msg,
       sourceUrl: url,
       line,
       column: col,
     } = ev.reason;
+
+    this.store.push({
+      logType: 'error',
+      logs: [msg],
+    });
+
+    if (msg.indexOf('请求错误(UploadLogsError)') >= 0) {
+      // Upload Logs Error
+      return;
+    }
+
     this.onerror(msg, url, line, col, ev.reason);
   }
 
