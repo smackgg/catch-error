@@ -36,6 +36,8 @@ options parameter
 | showDevtools | show devtools | Boolean | true/false | false |
 | urlSwitch | url query for devtools | Object | - | { devtools: 'show' } |
 | cdn | vConsole cdn | String | - | 'https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js' |
+| extendFields | add extend field about business or project what you want to send to the service, such as business_line, type | Object | - | - |
+
 
 
 ### show()
