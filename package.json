@@ -1,6 +1,6 @@
 {
   "name": "catch-global-error",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "catch javascript global error ",
   "main": "lib/catch-error.min.js",
   "scripts": {
