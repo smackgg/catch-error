@@ -138,6 +138,7 @@ class CatchError {
       targetUrl: url,
       line,
       col,
+      ...this.config.extendFields
     };
 
     // upload error
