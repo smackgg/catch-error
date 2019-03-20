@@ -20,7 +20,7 @@ export const ajax = ({ url, data, method = 'post' }) => new Promise((resolve, re
     let encodeFormData = '';
     for (const key in data) {
       if (data[key]) {
-        encodeFormData += (`${encodeFormData ? '&' : ''  }${key}=${data[key]}`);
+        encodeFormData += (`${encodeFormData ? '&' : ''}${key}=${encodeURIComponent(data[key])}`);
       }
     }
     xhr.send(encodeFormData);
