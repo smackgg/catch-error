@@ -15,7 +15,7 @@ export const ajax = ({ url, data, method = 'post' }) => new Promise((resolve, re
   }
   if (method === 'post') {
     xhr.open(method, url, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
   }
 });
