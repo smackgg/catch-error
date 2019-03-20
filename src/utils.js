@@ -15,15 +15,8 @@ export const ajax = ({ url, data, method = 'post' }) => new Promise((resolve, re
   }
   if (method === 'post') {
     xhr.open(method, url, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.send(JSON.stringify(data));
-    let encodeFormData = '';
-    for (const key in data) {
-      if (data[key]) {
-        encodeFormData += (`${encodeFormData ? '&' : ''}${key}=${encodeURIComponent(data[key])}`);
-      }
-    }
-    xhr.send(encodeFormData);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
   }
 });
 
