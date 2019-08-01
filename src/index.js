@@ -10,25 +10,31 @@ const DEFALT_CONFIG = {
   },
 };
 
+const METHOD_LIST = ['log', 'warn', 'info', 'debug', 'error'];
 class CatchError {
   constructor() {
     // cache store
     this.store = [];
-    this.methodList = ['log', 'warn', 'info', 'debug', 'error'];
     this.method = {};
     this.vConsole = null;
   }
   init = (config) => {
     this.config = { ...DEFALT_CONFIG, ...config };
 
-    this.cacheLog();
     const { showDevtools, urlSwitch } = this.config;
+
     const show = Object.keys(urlSwitch).reduce((pre, item) => {
       const regExp = new RegExp(`${item}=${urlSwitch[item]}`);
       return regExp.test(window.location.search) || pre;
     }, false);
 
-    if (showDevtools || show) {
+    // debug 状态存入 sessionStorage
+    if (show) {
+      sessionStorage.setItem('devtools', 'show');
+    }
+
+    if (showDevtools || show || sessionStorage.getItem('devtools') === 'show') {
+      this.cacheLog();
       return this.show();
     }
     return Promise.resolve();
@@ -44,7 +50,7 @@ class CatchError {
 
   cacheLog = () => {
     // 将 vconsole 加载之前的所有 log、error... 缓存
-    this.methodList.forEach((item) => {
+    METHOD_LIST.forEach((item) => {
       this.method[item] = console[item];
       console[item] = (...args) => {
         this.store.push({
