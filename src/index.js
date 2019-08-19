@@ -33,6 +33,8 @@ class CatchError {
       sessionStorage.setItem('devtools', 'show');
     }
 
+    this.cacheError();
+
     if (showDevtools || show || sessionStorage.getItem('devtools') === 'show') {
       this.cacheLog();
       return this.show();
@@ -60,7 +62,10 @@ class CatchError {
         this.method[item].apply(console, args);
       };
     });
+  }
 
+  // cache error
+  cacheError = () => {
     window.onerror = (...args) => {
       this.store.push({
         logType: 'error',
