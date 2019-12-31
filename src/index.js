@@ -104,6 +104,8 @@ class CatchError {
   }
 
   logRejectMessage = (ev) => {
+    console.log('logRejectMessage', ev);
+
     const {
       message: msg,
       sourceUrl: url,
@@ -116,7 +118,7 @@ class CatchError {
       logs: [msg],
     });
 
-    if (msg.indexOf('请求错误(UploadLogsError)') >= 0) {
+    if (msg && msg.indexOf('请求错误(UploadLogsError)') >= 0) {
       // Upload Logs Error
       return;
     }
@@ -149,7 +151,7 @@ class CatchError {
       targetUrl: url,
       line,
       col,
-      ...this.config.extendFields
+      ...this.config.extendFields,
     };
 
     // upload error
