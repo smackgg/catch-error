@@ -145,10 +145,11 @@ class CatchError {
 
     newMsg = (`${newMsg}` || '').substr(0, 500);
     const logs = {
-      msg: newMsg,
+      msg: newMsg || error,
       timestamp: Date.now(),
       userAgent: window.navigator.userAgent,
-      targetUrl: url,
+      sourceUrl: url,
+      targetUrl: window.location.href,
       line,
       col,
       ...this.config.extendFields,
