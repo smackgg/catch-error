@@ -104,8 +104,6 @@ class CatchError {
   }
 
   logRejectMessage = (ev) => {
-    console.log('logRejectMessage', ev);
-
     const {
       message: msg,
       sourceUrl: url,
@@ -127,6 +125,7 @@ class CatchError {
   }
 
   onerror = (msg, url, line, col, error) => {
+    console.log('catch-global-error: onerror', msg, url, line, col, error);
     if (!this.config.url) {
       return;
     }
