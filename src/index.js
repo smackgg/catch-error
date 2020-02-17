@@ -125,7 +125,10 @@ class CatchError {
   }
 
   onerror = (msg, url, line, col, error) => {
-    console.log('catch-global-error: onerror', msg, url, line, col, error);
+    console.log('catch-global-error => onerror:', {
+      msg, url, line, col, error,
+    });
+
     if (!this.config.url) {
       return;
     }
