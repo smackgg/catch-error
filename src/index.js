@@ -145,7 +145,7 @@ class CatchError {
 
     newMsg = (`${newMsg}` || '').substr(0, 500);
     const logs = {
-      msg: newMsg || error,
+      msg: newMsg || JSON.stringify(error),
       timestamp: Date.now(),
       userAgent: window.navigator.userAgent,
       sourceUrl: url,
